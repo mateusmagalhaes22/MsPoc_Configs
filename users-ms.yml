@@ -1,0 +1,32 @@
+server:
+  port: 0
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: "jdbc:mysql://${MYSQL_HOST:localhost}:3306/msPocDb?createDatabaseIfNotExist=true"
+    username: root
+    password: root
+  application:
+    name: users-ms
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: users-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8082/eureka
+    register-with-eureka: true
